@@ -636,6 +636,107 @@
 		initCiWeatherBar(site);
 		rewriteNavbarLinksForLanguage(site);
 		injectLanguageSwitcher(site);
+		setupFooterEmbedFallbacks();
 	});
+
+	function setupFooterEmbedFallbacks() {
+		var $footer = $(".ci-footer-external-links");
+		if (!$footer.length) return;
+
+		function attachIframeLoadHandlers(rootEl, onLoad) {
+			var iframes = rootEl.querySelectorAll("iframe");
+			for (var i = 0; i < iframes.length; i++) {
+				(function (iframe) {
+					iframe.addEventListener(
+						"load",
+						function () {
+							onLoad();
+						},
+						{ once: true }
+					);
+				})(iframes[i]);
+			}
+		}
+
+		function observeIframes(containerEl, onLoad) {
+			if (!window.MutationObserver) return null;
+			var obs = new MutationObserver(function (mutations) {
+				mutations.forEach(function (m) {
+					for (var i = 0; i < (m.addedNodes ? m.addedNodes.length : 0); i++) {
+						var node = m.addedNodes[i];
+						if (!node || node.nodeType !== 1) continue;
+						if (node.tagName && node.tagName.toLowerCase() === "iframe") {
+							attachIframeLoadHandlers(node.parentNode || containerEl, onLoad);
+						} else if (node.querySelectorAll) {
+							attachIframeLoadHandlers(node, onLoad);
+						}
+					}
+				});
+			});
+			try {
+				obs.observe(containerEl, { childList: true, subtree: true });
+				return obs;
+			} catch (e) {
+				return null;
+			}
+		}
+
+		function markLoaded(containerEl) {
+			containerEl.classList.remove("ci-embed-pending");
+			containerEl.classList.remove("ci-embed-failed");
+			containerEl.classList.add("ci-embed-loaded");
+		}
+
+		function markFailed(containerEl) {
+			containerEl.classList.remove("ci-embed-pending");
+			containerEl.classList.remove("ci-embed-loaded");
+			containerEl.classList.add("ci-embed-failed");
+			// Remove any injected iframes to prevent huge blank/loading blocks.
+			$(containerEl).find("iframe").remove();
+			// Ensure fallback link/text remains visible.
+			var blockquote = containerEl.querySelector("blockquote");
+			if (blockquote) blockquote.style.display = "block";
+		}
+
+		// TripAdvisor widget: keep the plain link, but only show iframe widgets if they actually load.
+		$(".ci-footer-external-links .TA_cdsratingsonlynarrow").each(function () {
+			var el = this;
+			el.classList.add("ci-embed-pending");
+
+			var obs = observeIframes(el, function () {
+				markLoaded(el);
+			});
+			attachIframeLoadHandlers(el, function () {
+				markLoaded(el);
+			});
+
+			setTimeout(function () {
+				if (!el.classList.contains("ci-embed-loaded")) {
+					markFailed(el);
+				}
+				if (obs) obs.disconnect();
+			}, 3500);
+		});
+
+		// Facebook page plugin: if SDK/iframe is blocked, keep only the fallback link.
+		$(".ci-footer-external-links .fb-page").each(function () {
+			var el = this;
+			el.classList.add("ci-embed-pending");
+
+			var obs = observeIframes(el, function () {
+				markLoaded(el);
+			});
+			attachIframeLoadHandlers(el, function () {
+				markLoaded(el);
+			});
+
+			setTimeout(function () {
+				if (!el.classList.contains("ci-embed-loaded")) {
+					markFailed(el);
+				}
+				if (obs) obs.disconnect();
+			}, 4000);
+		});
+	}
 })(jQuery);
 

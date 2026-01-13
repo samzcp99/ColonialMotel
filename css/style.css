@@ -10690,3 +10690,56 @@ a:focus {
     flex-basis: 104px;
   }
 }
+
+/*
+ * CI footer embed fallbacks
+ * - In some networks (e.g., Mainland China), TripAdvisor/Facebook embeds can stall.
+ * - Keep simple links, but prevent oversized loading/blank iframes.
+ */
+.ci-footer-external-links .TA_cdsratingsonlynarrow,
+.ci-footer-external-links .fb-page {
+  max-width: 100%;
+}
+
+.ci-footer-external-links .TA_cdsratingsonlynarrow {
+  max-height: 160px;
+  overflow: hidden;
+}
+
+.ci-footer-external-links .TA_cdsratingsonlynarrow img {
+  max-width: 240px;
+  height: auto;
+  display: block;
+}
+
+.ci-footer-external-links .fb-page {
+  max-height: 260px;
+  overflow: hidden;
+}
+
+.ci-footer-external-links .fb-page blockquote {
+  margin: 0;
+}
+
+.ci-footer-external-links .ci-embed-pending,
+.ci-footer-external-links .ci-embed-failed {
+  height: auto !important;
+  min-height: 0 !important;
+}
+
+.ci-footer-external-links .ci-embed-pending span,
+.ci-footer-external-links .ci-embed-failed span {
+  height: auto !important;
+  min-height: 0 !important;
+}
+
+.ci-footer-external-links .ci-embed-pending iframe,
+.ci-footer-external-links .ci-embed-failed iframe {
+  display: none !important;
+}
+
+.ci-footer-external-links .fb-page iframe,
+.ci-footer-external-links .fb-page span,
+.ci-footer-external-links .fb-page span iframe {
+  max-width: 100% !important;
+}
