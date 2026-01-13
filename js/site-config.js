@@ -9,4 +9,7 @@
 
 window.CI_SITE = window.CI_SITE || {
   ga4MeasurementId: "",
+  // Site version for debugging + release tracking.
+  // Bump this for each publish.
+  version: "2026.01.14",
 };

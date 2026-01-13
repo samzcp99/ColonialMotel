@@ -27,6 +27,9 @@ scss/
 # Optional docs (not part of production web root)
 docs/
 
+# Local backup of legacy images (not used in production)
+images/old/
+
 # Logs
 *.log
 

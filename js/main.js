@@ -158,6 +158,64 @@
 	};
 	carousel();
 
+	var normalizeBookingLinks = function() {
+		$('a[href*="book-directonline.com/properties/ColonialMotelDIRECT"]').each(function() {
+			var href = $(this).attr('href');
+			if (!href) return;
+			try {
+				var url = new URL(href);
+				url.searchParams.delete('checkInDate');
+				url.searchParams.delete('checkOutDate');
+				$(this).attr('href', url.toString());
+			} catch (e) {
+				// ignore
+			}
+		});
+	};
+	normalizeBookingLinks();
+
+	var deferFooterBackground = function() {
+		var footers = document.querySelectorAll('.ftco-footer.ftco-section.img');
+		if (!footers || !footers.length) return;
+
+		var enable = function(el) {
+			if (!el || el.classList.contains('ci-footer-bg')) return;
+			el.classList.add('ci-footer-bg');
+		};
+
+		if ('IntersectionObserver' in window) {
+			var io = new IntersectionObserver(function(entries, observer) {
+				entries.forEach(function(entry) {
+					if (entry.isIntersecting) {
+						enable(entry.target);
+						observer.unobserve(entry.target);
+					}
+				});
+			}, { root: null, rootMargin: '200px 0px', threshold: 0.01 });
+			footers.forEach(function(el) { io.observe(el); });
+		} else {
+			// Fallback: enable after a short delay
+			setTimeout(function() {
+				footers.forEach(function(el) { enable(el); });
+			}, 1500);
+		}
+	};
+	deferFooterBackground();
+
+	var injectSiteVersion = function() {
+		var version = (window.CI_SITE && window.CI_SITE.version) ? String(window.CI_SITE.version) : '';
+		if (!version) return;
+		var label = 'v' + version;
+
+		var $target = $('.ftco-footer .text-center p').last();
+		if (!$target.length) $target = $('.ftco-footer p').last();
+		if (!$target.length) return;
+		if ($target.text().indexOf(label) !== -1) return;
+
+		$target.append(' <span class="ci-site-version">· ' + label + '</span>');
+	};
+	injectSiteVersion();
+
 	$('nav .dropdown').hover(function(){
 		var $this = $(this);
 		// 	 timer;

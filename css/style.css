@@ -10236,6 +10236,31 @@ a:focus {
   color: #fff !important;
 }
 
+/* Navbar logo (site-wide) */
+.ftco-navbar-light .navbar-brand {
+  position: relative;
+  padding-left: 52px;
+}
+.ftco-navbar-light .navbar-brand::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  background: url("../images/logo/logo-white.png") center / contain no-repeat;
+}
+@media (max-width: 991.98px) {
+  .ftco-navbar-light .navbar-brand {
+    padding-left: 46px;
+  }
+  .ftco-navbar-light .navbar-brand::before {
+    width: 34px;
+    height: 34px;
+  }
+}
+
 /* Navbar typography */
 .ftco-navbar-light .navbar-nav > .nav-item > .nav-link {
   font-size: 16px;
@@ -10301,10 +10326,27 @@ a:focus {
   background: var(--ci-footer) !important;
   opacity: 0.92;
 }
+
+/* Footer background image: defer loading until needed */
+.ftco-footer.ftco-section.img {
+  background-image: none !important;
+}
+.ftco-footer.ftco-section.img.ci-footer-bg {
+  background-image: url("../images/bg_4.jpg") !important;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
 .ftco-footer a:hover,
 .ftco-footer .footer-small-nav > li a:hover,
 .ftco-footer .footer-small-nav > li a:focus {
   color: var(--ci-primary) !important;
+}
+
+.ftco-footer .ci-site-version {
+  opacity: 0.8;
+  font-size: 0.9em;
+  white-space: nowrap;
 }
 
 /* Borders for modules/images */
