@@ -1,0 +1,34 @@
+# --- OS / editor cruft ---
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+Thumbs.db
+
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# --- Python / local tooling (dev-only) ---
+.venv/
+__pycache__/
+*.py[cod]
+
+# Sass cache
+.sass-cache/
+
+# Dev scripts and build sources are not deployed
+tools/
+scss/
+
+# Optional docs (not part of production web root)
+docs/
+
+# Logs
+*.log
+
+# Keep vendor + compiled assets in repo
+# css/, js/, images/, fonts/, lan/, *.html, sitemap.xml, robots.txt
