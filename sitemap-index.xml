@@ -1,8 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  Legacy sitemap URL kept for compatibility.
-  This file is now a sitemap index; submit sitemap-index.xml in Search Console.
--->
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <sitemap>
     <loc>https://www.colonial-motel.co.nz/sitemap-en.xml</loc>

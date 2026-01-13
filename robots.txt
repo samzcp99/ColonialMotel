@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.colonial-motel.co.nz/sitemap.xml
+Sitemap: https://www.colonial-motel.co.nz/sitemap-index.xml
